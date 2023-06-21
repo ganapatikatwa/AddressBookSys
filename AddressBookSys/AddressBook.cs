@@ -20,11 +20,11 @@ namespace AddressBookSys
         {
             Console.WriteLine("How Many Contacts Wants to Add Please Enter Here");
             int number = Convert.ToInt32(Console.ReadLine());
+
             for (int i = 1; i <= number; i++)
             {
                 List<Contact> contacts = new List<Contact>();
                 Contact addressBook = new Contact();
-
                 Console.WriteLine("Enter First Name :");
 
                 addressBook.FirstName = Console.ReadLine();
@@ -66,11 +66,7 @@ namespace AddressBookSys
                 {
                     Console.WriteLine("Details of Person Already Exist=>");
                 }
-
-
-
             }
-
         }
         /// <summary>
         /// Displays the specified dictobj.
@@ -113,65 +109,135 @@ namespace AddressBookSys
         //
         public static void Edit(Dictionary<string, List<Contact>> dictobj)
         {
-            Contact addressBook = new Contact();
-            List<Contact> contacts = new List<Contact>();
 
+            List<Contact> contacts = new List<Contact>();
+            Contact addressBook = new Contact();
             Console.WriteLine("To Edit Person Name Please Enter First Name:");
 
             string name = Console.ReadLine();
+
             if (dictobj.ContainsKey(name))
             {
-                Console.WriteLine("Please Select Options to Edit Details:\n" +
+
+                Console.WriteLine("Please Follow the Following Sequences to Edit:\n" +
                     "1)First Name\n" + "2)Last Name\n" + "3)Address\n" +
-                    "4)City\n" + "5)State\n" + "6)Phone Number\n" + "7)Zip Code\n" +
-                    "8)Email\n");
+                   "4)City\n" + "5)State\n" + "6)Phone Number\n" + "7)Zip Code\n" +
+                   "8)Email\n");
 
-                int take = Convert.ToInt32(Console.ReadLine());
+                int take = 1;
 
-                switch (take)
+                if (take == 1)
                 {
-                    case 1:
-                        Console.WriteLine("Editing First Name:-");
-                        addressBook.FirstName = Console.ReadLine();
-                        break;
-                    case 2:
-                        Console.WriteLine("Editing Last Name:-");
-                        addressBook.LastName = Console.ReadLine();
-                        break;
-                    case 3:
-                        Console.WriteLine("Editing Address:-");
-                        addressBook.Address = Console.ReadLine();
-                        break;
-                    case 4:
-                        Console.WriteLine("Editing City Name:-");
-                        addressBook.City = Console.ReadLine();
-                        break;
-                    case 5:
-                        Console.WriteLine("Editing State:-");
-                        addressBook.State = Console.ReadLine();
-                        break;
-                    case 6:
-                        Console.WriteLine("Editing Phone Number:-");
-                        addressBook.PhNumber = Convert.ToInt32(Console.ReadLine());
-                        break;
-                    case 7:
-                        Console.WriteLine("Editing Zip Code:-");
-                        addressBook.ZipCode = Convert.ToInt32(Console.ReadLine());
-                        break;
-                    case 8:
-                        Console.WriteLine("Editing Email:-");
-                        addressBook.Email = Console.ReadLine();
-                        break;
-                    default:
-                        Console.WriteLine("Wrong Input!!Try Again");
-                        break;
+                    Console.WriteLine("Editing First Name:-");
+                    addressBook.FirstName = Console.ReadLine().ToLower();
 
+                    Console.WriteLine("Editing Last Name:-");
+                    addressBook.LastName = Console.ReadLine();
+
+                    Console.WriteLine("Editing Address:-");
+                    addressBook.Address = Console.ReadLine();
+
+                    Console.WriteLine("Editing City Name:-");
+                    addressBook.City = Console.ReadLine();
+
+                    Console.WriteLine("Editing State:-");
+                    addressBook.State = Console.ReadLine();
+
+                    Console.WriteLine("Editing Phone Number:-");
+                    addressBook.PhNumber = Convert.ToInt32(Console.ReadLine());
+
+                    Console.WriteLine("Editing Zip Code:-");
+                    addressBook.ZipCode = Convert.ToInt32(Console.ReadLine());
+
+                    Console.WriteLine("Editing Email:-");
+                    addressBook.Email = Console.ReadLine();
 
                 }
+                else
+                {
+                    Console.WriteLine("Wrong input");
+                }
+
                 Console.WriteLine("Details Updated");
+
                 //store again in Contact
                 contacts.Add(addressBook);
                 dictobj.Add(addressBook.FirstName, contacts);
+
+            }
+
+        }
+
+
+        //search person using City or State
+
+        public void SearchusingCityorState(Dictionary<string, List<Contact>> dictobj)
+        {
+
+            Console.WriteLine("To search Person Enter City or State:\n" +
+                "1)Select City\n" + "2)Select State\n");
+
+            //List<Contact> store = new List<Contact>();
+            int Search = Convert.ToInt32(Console.ReadLine());
+
+            switch (Search)
+            {
+                case 1:
+                    Console.WriteLine("Enter City Name:");
+                    string city = Console.ReadLine();
+
+                    foreach (KeyValuePair<string, List<Contact>> person in dictobj)
+                    {
+                        contacts = person.Value;
+                    }
+
+                    var result = contacts.Any(x => x.City.Equals(city));
+
+                    if (result)
+                    {
+                        var check = contacts.Where(x => x.City.Contains(city));
+                        foreach (var item in check)
+                        {
+                            Console.WriteLine("First Name: => " + item.FirstName);
+                            Console.WriteLine("City Name: => " + item.City);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Such City Found try Another City Name");
+                    }
+                    break;
+
+                case 2:
+                    Console.WriteLine("Enter State:");
+                    string state = Console.ReadLine();
+
+                    foreach (KeyValuePair<string, List<Contact>> persons in dictobj)
+                    {
+                        contacts = persons.Value;
+                    }
+
+                    var result1 = contacts.Any(x => x.State.Equals(state));
+
+                    if (result1)
+                    {
+                        var check = contacts.Where(x => x.State.Contains(state));
+                        foreach (var item in check)
+                        {
+                            Console.WriteLine("First Name: => " + item.FirstName);
+                            Console.WriteLine("State Name: => " + item.State);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Such State Found try Another State");
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("No correct Option");
+                    break;
+
 
             }
 
@@ -181,8 +247,9 @@ namespace AddressBookSys
 
         public void ContactDetails()
         {
+        Start:
             Console.WriteLine("Select Method Which you Want Check :\n" +
-                "1)Add\n" + "2)Edit\n" + "3)Display\n");
+                "1)Add\n" + "2)Edit\n" + "3)SearchusingCityorState\n" + "4)Display\n");
 
             int check = Convert.ToInt32(Console.ReadLine());
 
@@ -195,6 +262,9 @@ namespace AddressBookSys
                     Edit(dictobj);
                     break;
                 case 3:
+                    SearchusingCityorState(dictobj);
+                    break;
+                case 4:
                     Display(dictobj);
                     break;
                 default:
@@ -203,8 +273,8 @@ namespace AddressBookSys
 
 
             }
+            goto Start;
 
         }
-
     }
 }
