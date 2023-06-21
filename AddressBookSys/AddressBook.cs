@@ -68,10 +68,7 @@ namespace AddressBookSys
                 }
             }
         }
-        /// <summary>
-        /// Displays the specified dictobj.
-        /// </summary>
-        /// <param name="dictobj">The dictobj.</param>
+
         public void Display(Dictionary<string, List<Contact>> dictobj)
         {
             int count = 1;
@@ -106,7 +103,7 @@ namespace AddressBookSys
             }
         }
 
-        //
+
         public static void Edit(Dictionary<string, List<Contact>> dictobj)
         {
 
@@ -159,15 +156,12 @@ namespace AddressBookSys
                 }
 
                 Console.WriteLine("Details Updated");
-
                 //store again in Contact
                 contacts.Add(addressBook);
                 dictobj.Add(addressBook.FirstName, contacts);
 
             }
-
         }
-
 
         //search person using City or State
 
@@ -198,7 +192,7 @@ namespace AddressBookSys
                         var check = contacts.Where(x => x.City.Contains(city));
                         foreach (var item in check)
                         {
-                            Console.WriteLine("First Name: => " + item.FirstName);
+                            Console.WriteLine("The Persons First Name: => " + item.FirstName);
                             Console.WriteLine("City Name: => " + item.City);
                         }
                     }
@@ -218,13 +212,12 @@ namespace AddressBookSys
                     }
 
                     var result1 = contacts.Any(x => x.State.Equals(state));
-
                     if (result1)
                     {
                         var check = contacts.Where(x => x.State.Contains(state));
                         foreach (var item in check)
                         {
-                            Console.WriteLine("First Name: => " + item.FirstName);
+                            Console.WriteLine("The Persons First Name: => " + item.FirstName);
                             Console.WriteLine("State Name: => " + item.State);
                         }
                     }
@@ -237,10 +230,7 @@ namespace AddressBookSys
                 default:
                     Console.WriteLine("No correct Option");
                     break;
-
-
             }
-
         }
 
         //Creating Details Method to Edit Add and Display
@@ -270,11 +260,8 @@ namespace AddressBookSys
                 default:
                     Console.WriteLine("Wrong Input");
                     break;
-
-
             }
             goto Start;
-
         }
     }
 }
