@@ -8,260 +8,254 @@ namespace AddressBookSys
 {
     public class AddressBook
     {
+        public List<Contact> People = new List<Contact>();
+        public Dictionary<string, List<Contact>> Dictionary1 = new Dictionary<string, List<Contact>>();
+        public Dictionary<string, List<Contact>> Dictionary2 = new Dictionary<string, List<Contact>>();
+        public Dictionary<string, List<Contact>> Dictionary3 = new Dictionary<string, List<Contact>>();
 
-        public static List<Contact> contacts = new List<Contact>();
-        public static Dictionary<string, List<Contact>> dictobj = new Dictionary<string, List<Contact>>();
-
-        /// <summary>
-        /// Adds the specified dictobj.
-        /// </summary>
-        /// <param name="dictobj">The dictobj.</param>
-        public void Add(Dictionary<string, List<Contact>> dictobj)
+        public void AddPerson()
         {
-            Console.WriteLine("How Many Contacts Wants to Add Please Enter Here");
-            int number = Convert.ToInt32(Console.ReadLine());
-
-            for (int i = 1; i <= number; i++)
+            Contacts contact = new Contacts();
+            int Flag = 0;
+            Console.WriteLine("Enter the First name :");
+            contact.firstName = Console.ReadLine();
+            string FirstNameToBeAdded = contact.firstName;
+            foreach (var data in People)
             {
-                List<Contact> contacts = new List<Contact>();
-                Contact addressBook = new Contact();
-                Console.WriteLine("Enter First Name :");
-
-                addressBook.FirstName = Console.ReadLine();
-
-                var address = dictobj.Any(x => x.Key.Equals(addressBook.FirstName));
-
-                if (address == false)
+                if (People.Exists(data => data.firstName == FirstNameToBeAdded))
                 {
-                    Console.WriteLine("Enter Last Name");
-                    addressBook.LastName = Console.ReadLine();
-
-                    Console.WriteLine("Enter Address");
-                    addressBook.Address = Console.ReadLine();
-
-                    Console.WriteLine("Enter City");
-                    addressBook.City = Console.ReadLine();
-
-                    Console.WriteLine("Enter State");
-                    addressBook.State = Console.ReadLine();
-
-                    Console.WriteLine("Enter Phone Number");
-                    addressBook.PhNumber = Convert.ToInt32(Console.ReadLine());
-
-                    Console.WriteLine("Enter Zip Code");
-                    addressBook.ZipCode = Convert.ToInt32(Console.ReadLine());
-
-                    Console.WriteLine("Enter Email");
-                    addressBook.Email = Console.ReadLine();
-
-                    Console.WriteLine("Current Persons Details Added ->");
-                    //Store addressBook object in contacts object
-
-                    contacts.Add(addressBook);
-
-                    dictobj.Add(addressBook.FirstName, contacts);
-
+                    Flag++;
+                    Console.WriteLine("This FirstName already Exist! Can't take the Duplicate Record.");
+                    break;
                 }
-                else
+            }
+            if (Flag == 0)
+            {
+                Console.WriteLine("Enter the Last name :");
+                contact.lastName = Console.ReadLine();
+                Console.WriteLine("Enter the Address :");
+                contact.address = Console.ReadLine();
+                Console.WriteLine("Enter the City :");
+                contact.city = Console.ReadLine();
+                Console.WriteLine("Enter the State :");
+                contact.state = Console.ReadLine();
+                Console.WriteLine("Enter the Zip Code :");
+                contact.zip = Convert.ToInt16(Console.ReadLine());
+                Console.WriteLine("Enter the Email :");
+                contact.email = Console.ReadLine();
+                Console.WriteLine("Enter the Phone Number :");
+                contact.phoneNumber = Console.ReadLine();
+            }
+            People.Add(contact);
+        }
+
+        public void Display()
+        {
+            foreach (var data in People)
+            {
+                if (People.Contains(data))
+                    Console.WriteLine("Name of person : " + data.firstName + " " + data.lastName);
+                Console.WriteLine("Address of person is : " + data.address);
+                Console.WriteLine("City : " + data.city);
+                Console.WriteLine("State :" + data.state);
+                Console.WriteLine("Zip :" + data.zip);
+                Console.WriteLine("Email of person : " + data.email);
+                Console.WriteLine("Phone Number of person : " + data.phoneNumber);
+            }
+        }
+        //uc8
+        public void SearchByCityState()
+        {
+            Console.WriteLine("Please enter the name of City or State:");
+            string WantedCityOrState = Console.ReadLine();
+            foreach (var data in People)
+            {
+                string ActualCity = data.city;
+                string ActualState = data.state;
+                if (People.Exists(data => (ActualCity == WantedCityOrState) || (ActualState == WantedCityOrState)))
                 {
-                    Console.WriteLine("Details of Person Already Exist=>");
+                    Console.WriteLine("Name of person : " + data.firstName + " " + data.lastName);
+                    Console.WriteLine("Address of person is : " + data.address);
+                    Console.WriteLine("City : " + data.city);
+                    Console.WriteLine("State :" + data.state);
+                    Console.WriteLine("Zip :" + data.zip);
+                    Console.WriteLine("Email of person : " + data.email);
+                    Console.WriteLine("Phone Number of person : " + data.phoneNumber);
                 }
             }
         }
-
-        public void Display(Dictionary<string, List<Contact>> dictobj)
+        public void CountByCityState()
         {
-            int count = 1;
-            if (dictobj.Count > 0)
+            Console.WriteLine("Please enter the name of City or State:");
+            string WantedCityOrState = Console.ReadLine();
+            int Count = 0;
+            foreach (var data in People)
             {
-                foreach (KeyValuePair<string, List<Contact>> pair in dictobj)
+                string ActualCity = data.city;
+                string ActualState = data.state;
+                if (People.Exists(data => (ActualCity == WantedCityOrState) || (ActualState == WantedCityOrState)))
                 {
-                    foreach (Contact contacts in pair.Value)
-                    {
-                        Console.WriteLine("Contact of Person");
-                        Console.WriteLine(pair.Key);
-
-                        Console.WriteLine("First name :" + contacts.FirstName);
-
-                        Console.WriteLine("Last name :" + contacts.LastName);
-
-                        Console.WriteLine("Address :" + contacts.Address);
-
-                        Console.WriteLine("City :" + contacts.City);
-
-                        Console.WriteLine("State :" + contacts.State);
-
-                        Console.WriteLine("ZipCode :" + contacts.ZipCode);
-
-                        Console.WriteLine("Phone Number :" + contacts.PhNumber);
-
-                        Console.WriteLine("Email :" + contacts.Email);
-                        Console.WriteLine(":::::::::::::::::::::::::::::::::::::::");
-                        count++;
-                    }
+                    Count++;
                 }
             }
+            Console.WriteLine("There are {0} Persons in {1}", Count, WantedCityOrState);
         }
-
-
-        public static void Edit(Dictionary<string, List<Contact>> dictobj)
+        public void edit()
         {
-
-            List<Contact> contacts = new List<Contact>();
-            Contact addressBook = new Contact();
-            Console.WriteLine("To Edit Person Name Please Enter First Name:");
-
+            Console.WriteLine("Enter the name to search : ");
             string name = Console.ReadLine();
-
-            if (dictobj.ContainsKey(name))
+            foreach (var data in People)
             {
-
-                Console.WriteLine("Please Follow the Following Sequences to Edit:\n" +
-                    "1)First Name\n" + "2)Last Name\n" + "3)Address\n" +
-                   "4)City\n" + "5)State\n" + "6)Phone Number\n" + "7)Zip Code\n" +
-                   "8)Email\n");
-
-                int take = 1;
-
-                if (take == 1)
+                if (data.firstName != name)
                 {
-                    Console.WriteLine("Editing First Name:-");
-                    addressBook.FirstName = Console.ReadLine().ToLower();
+                    Console.WriteLine("Contact for {0} count not be found.", name);
+                }
+                else if (data.firstName == name)
+                {
+                    Console.WriteLine("choose the option to change the data : \n1) firstName\n2)lastName\n3)address\n4)City\n5)State\n6)Zip\n7)Email\n8)Phone Number");
+                    int choice = Convert.ToInt32(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            Console.WriteLine("Please enter the first name : ");
+                            string frstName = Console.ReadLine();
+                            data.firstName = frstName;
+                            break;
+                        case 2:
+                            Console.WriteLine("Please enter the last name : ");
+                            string lstName = Console.ReadLine();
+                            data.lastName = lstName;
+                            break;
+                        case 3:
+                            Console.WriteLine("Please enter the Address : ");
+                            string addrss = Console.ReadLine();
+                            data.address = addrss;
+                            break;
+                        case 4:
+                            Console.WriteLine("Please enter the city : ");
+                            string cty = Console.ReadLine();
+                            data.city = cty;
+                            break;
+                        case 5:
+                            Console.WriteLine("Please enter the state : ");
+                            string State = Console.ReadLine();
+                            data.state = State;
+                            break;
+                        case 6:
+                            Console.WriteLine("Please enter the zip Code : ");
+                            int Zip = Convert.ToInt16(Console.ReadLine());
+                            data.zip = Zip;
+                            break;
+                        case 7:
+                            Console.WriteLine("Please enter the email : ");
+                            string Email = Console.ReadLine();
+                            data.email = Email;
+                            break;
+                        case 8:
+                            Console.WriteLine("Please enter the Phone Number : ");
+                            string PhoneNumber = Console.ReadLine();
+                            data.phoneNumber = PhoneNumber;
+                            break;
+                        default:
+                            Console.WriteLine("please choose from above options :");
+                            break;
+                    }
 
-                    Console.WriteLine("Editing Last Name:-");
-                    addressBook.LastName = Console.ReadLine();
+                }
 
-                    Console.WriteLine("Editing Address:-");
-                    addressBook.Address = Console.ReadLine();
+            }
 
-                    Console.WriteLine("Editing City Name:-");
-                    addressBook.City = Console.ReadLine();
+        }
+        public void RemoveContact()
+        {
+            Console.WriteLine("Enter the name to search : ");
+            string name = Console.ReadLine();
+            try
+            {
+                foreach (var data in People)
+                {
+                    if (People.Contains(data))
+                    {
+                        if (data.firstName == name)
+                        {
+                            Console.WriteLine("given name contact exists");
+                            People.Remove(data);
 
-                    Console.WriteLine("Editing State:-");
-                    addressBook.State = Console.ReadLine();
-
-                    Console.WriteLine("Editing Phone Number:-");
-                    addressBook.PhNumber = Convert.ToInt32(Console.ReadLine());
-
-                    Console.WriteLine("Editing Zip Code:-");
-                    addressBook.ZipCode = Convert.ToInt32(Console.ReadLine());
-
-                    Console.WriteLine("Editing Email:-");
-                    addressBook.Email = Console.ReadLine();
-
+                            Console.WriteLine("contact deleted successfully");
+                            return;
+                        }
+                    }
+                }
+                Console.WriteLine("given name contact does not exists");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public void AddMultipleContacts(int n)
+        {
+            while (n > 0)
+            {
+                AddPerson();
+                n--;
+            }
+        }
+        public void AddUniqueContacts()
+        {
+            Console.WriteLine("Welcome to Dictionary1");
+            Console.WriteLine("Enter the First name : ");
+            string name = Console.ReadLine().ToLower();
+            foreach (var data in People)
+            {
+                if (People.Contains(data))
+                {
+                    if (data.firstName == name)
+                    {
+                        Console.WriteLine("Enter the Unique name : ");
+                        string unique = Console.ReadLine().ToLower();
+                        if (Dictionary1.ContainsKey(unique))
+                        {
+                            Console.WriteLine("Person name already exists! ");
+                        }
+                        Dictionary1.Add(unique, People);
+                        Console.WriteLine("added in dictionary!");
+                        return;
+                    }
+                }
+            }
+            Console.WriteLine("Contact list doesn't exist! Please create a contact list!");
+            return;
+        }
+        public void DisplayUniqueContacts()
+        {
+            Console.WriteLine("Enter the unique name (key value) : ");
+            string name = Console.ReadLine();
+            foreach (var contacts in Dictionary1)
+            {
+                if (contacts.Key.Contains(name))
+                {
+                    foreach (var data in contacts.Value)
+                    {
+                        Console.WriteLine("The contact of " + data.firstName + " Details are");
+                        Console.WriteLine("Name of person : " + data.firstName + " " + data.lastName);
+                        Console.WriteLine("Address of person is : " + data.address);
+                        Console.WriteLine("City : " + data.city);
+                        Console.WriteLine("State :" + data.state);
+                        Console.WriteLine("Zip :" + data.zip);
+                        Console.WriteLine("Email of person : " + data.email);
+                        Console.WriteLine("Phone Number of person : " + data.phoneNumber);
+                        return;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Wrong input");
+                    Console.WriteLine("This unique name doesnt exists!");
                 }
 
-                Console.WriteLine("Details Updated");
-                //store again in Contact
-                contacts.Add(addressBook);
-                dictobj.Add(addressBook.FirstName, contacts);
-
             }
-        }
+            Console.WriteLine("Oops! Unique Contact does not exist.Please create a unique contact.");
 
-        //search person using City or State
-
-        public void SearchusingCityorState(Dictionary<string, List<Contact>> dictobj)
-        {
-
-            Console.WriteLine("To search Person Enter City or State:\n" +
-                "1)Select City\n" + "2)Select State\n");
-
-            //List<Contact> store = new List<Contact>();
-            int Search = Convert.ToInt32(Console.ReadLine());
-
-            switch (Search)
-            {
-                case 1:
-                    Console.WriteLine("Enter City Name:");
-                    string city = Console.ReadLine();
-
-                    foreach (KeyValuePair<string, List<Contact>> person in dictobj)
-                    {
-                        contacts = person.Value;
-                    }
-
-                    var result = contacts.Any(x => x.City.Equals(city));
-
-                    if (result)
-                    {
-                        var check = contacts.Where(x => x.City.Contains(city));
-                        foreach (var item in check)
-                        {
-                            Console.WriteLine("The Persons First Name: => " + item.FirstName);
-                            Console.WriteLine("City Name: => " + item.City);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No Such City Found try Another City Name");
-                    }
-                    break;
-
-                case 2:
-                    Console.WriteLine("Enter State:");
-                    string state = Console.ReadLine();
-
-                    foreach (KeyValuePair<string, List<Contact>> persons in dictobj)
-                    {
-                        contacts = persons.Value;
-                    }
-
-                    var result1 = contacts.Any(x => x.State.Equals(state));
-                    if (result1)
-                    {
-                        var check = contacts.Where(x => x.State.Contains(state));
-                        foreach (var item in check)
-                        {
-                            Console.WriteLine("The Persons First Name: => " + item.FirstName);
-                            Console.WriteLine("State Name: => " + item.State);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No Such State Found try Another State");
-                    }
-                    break;
-
-                default:
-                    Console.WriteLine("No correct Option");
-                    break;
-            }
-        }
-
-        //Creating Details Method to Edit Add and Display
-
-        public void ContactDetails()
-        {
-        Start:
-            Console.WriteLine("Select Method Which you Want Check :\n" +
-                "1)Add\n" + "2)Edit\n" + "3)SearchusingCityorState\n" + "4)Display\n");
-
-            int check = Convert.ToInt32(Console.ReadLine());
-
-            switch (check)
-            {
-                case 1:
-                    Add(dictobj);
-                    break;
-                case 2:
-                    Edit(dictobj);
-                    break;
-                case 3:
-                    SearchusingCityorState(dictobj);
-                    break;
-                case 4:
-                    Display(dictobj);
-                    break;
-                default:
-                    Console.WriteLine("Wrong Input");
-                    break;
-            }
-            goto Start;
         }
     }
 }
