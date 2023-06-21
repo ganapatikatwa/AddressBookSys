@@ -10,7 +10,8 @@ namespace AddressBookSys
             AddressBook contact1 = new AddressBook();
             while (true)
             {
-                Console.WriteLine("Enter the option : \n1)Add Contact\n2)Display contact\n3 Edit Contact\n4)Remove Contact\n" +
+                Console.WriteLine("Enter the option : \n1)Add Contact\n2)Display contact\n3 Edit Contact\n" +
+                    "4)Remove Contact\n" +
                     "5)Add Multiple Contacts \n6)AddUniqueContacts\n7)Display Unique contacts\n" +
                     "8)Search name by City or State\n9)Get Count of Persons by City or State\n" +
                     "10)Maintain Dictionary_city\n11)Maintain Dictionary_state\n12)Sorting list by firstNames");

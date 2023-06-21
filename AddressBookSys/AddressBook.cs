@@ -307,10 +307,10 @@ namespace AddressBookSys
                 Console.WriteLine("No AddressBook(s) to Show.");
             if (DictionaryCity.Count >= 1)
             {
-                foreach (KeyValuePair<string, List<Contact>> addressBooks in DictionaryCity)
+                foreach (KeyValuePair<string, List<Contacts>> addressBooks in DictionaryCity)
                 {
                     Console.WriteLine("Contacts From City: " + addressBooks.Key);
-                    foreach (Contact items in addressBooks.Value)
+                    foreach (Contacts items in addressBooks.Value)
                     {
                         Console.WriteLine($"Name: {items.firstName + " " + items.lastName}, Phone Number: {items.phoneNumber}, City: {items.city}, State: {items.state}" +
                             $"\n Address: {items.address}, Zipcode: {items.zip}, Email: {items.email}");
@@ -327,7 +327,7 @@ namespace AddressBookSys
                 var data = People.GroupBy(x => x.state);
                 foreach (var states in data)
                 {
-                    List<Contact> stateList = new List<Contact>();
+                    List<Contacts> stateList = new List<Contacts>();
                     foreach (var state in states)
                     {
                         stateList.Add(state);
@@ -347,10 +347,10 @@ namespace AddressBookSys
                 Console.WriteLine("No AddressBook(s) to Show.");
             if (DictionaryState.Count >= 1)
             {
-                foreach (KeyValuePair<string, List<Contact>> addressBooks in DictionaryState)
+                foreach (KeyValuePair<string, List<Contacts>> addressBooks in DictionaryState)
                 {
                     Console.WriteLine("Contacts From State: " + addressBooks.Key);
-                    foreach (Contact items in addressBooks.Value)
+                    foreach (Contacts items in addressBooks.Value)
                     {
                         Console.WriteLine($"Name: {items.firstName + " " + items.lastName}, Phone Number: {items.phoneNumber}, City: {items.city}, State: {items.state}" +
                             $"\n Address: {items.address}, Zipcode: {items.zip}, Email: {items.email}");
