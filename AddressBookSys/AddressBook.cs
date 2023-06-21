@@ -8,14 +8,16 @@ namespace AddressBookSys
 {
     public class AddressBook
     {
+
         public List<Contact> People = new List<Contact>();
         public Dictionary<string, List<Contact>> Dictionary1 = new Dictionary<string, List<Contact>>();
-        public Dictionary<string, List<Contact>> Dictionary2 = new Dictionary<string, List<Contact>>();
-        public Dictionary<string, List<Contact>> Dictionary3 = new Dictionary<string, List<Contact>>();
+        public Dictionary<string, List<Contact>> DictionaryCity = new Dictionary<string, List<Contact>>();
+        public Dictionary<string, List<Contact>> DictionaryState = new Dictionary<string, List<Contact>>();
+
 
         public void AddPerson()
         {
-            Contacts contact = new Contacts();
+            Contact contact = new Contact();
             int Flag = 0;
             Console.WriteLine("Enter the First name :");
             contact.firstName = Console.ReadLine();
@@ -48,6 +50,26 @@ namespace AddressBookSys
             }
             People.Add(contact);
         }
+        // sorting the contacts list in alphabetical order of firstName
+        public void SortingList()
+        {
+            List<Contact> SortedList = new List<Contact>();
+            SortedList = People.OrderBy(s => s.firstName).ToList();
+            //foreach(var data in People.OrderBy(s => s.firstName).ToList())
+            foreach (var data in SortedList)
+            {
+                if (People.Contains(data))
+                {
+                    Console.WriteLine("Name of person : " + data.firstName + " " + data.lastName);
+                    Console.WriteLine("Address of person is : " + data.address);
+                    Console.WriteLine("City : " + data.city);
+                    Console.WriteLine("State :" + data.state);
+                    Console.WriteLine("Zip :" + data.zip);
+                    Console.WriteLine("Email of person : " + data.email);
+                    Console.WriteLine("Phone Number of person : " + data.phoneNumber);
+                }
+            }
+        }
 
         public void Display()
         {
@@ -72,6 +94,7 @@ namespace AddressBookSys
             {
                 string ActualCity = data.city;
                 string ActualState = data.state;
+                // DictionaryCity[ActualCity].Add(data);
                 if (People.Exists(data => (ActualCity == WantedCityOrState) || (ActualState == WantedCityOrState)))
                 {
                     Console.WriteLine("Name of person : " + data.firstName + " " + data.lastName);
@@ -227,6 +250,7 @@ namespace AddressBookSys
             Console.WriteLine("Contact list doesn't exist! Please create a contact list!");
             return;
         }
+
         public void DisplayUniqueContacts()
         {
             Console.WriteLine("Enter the unique name (key value) : ");
@@ -252,10 +276,88 @@ namespace AddressBookSys
                 {
                     Console.WriteLine("This unique name doesnt exists!");
                 }
-
             }
             Console.WriteLine("Oops! Unique Contact does not exist.Please create a unique contact.");
-
+        }
+        // uc9 Dictionary for the City and state
+        public void ContactByCityInDictionary()
+        {
+            try
+            {
+                var data = People.GroupBy(x => x.city);
+                foreach (var cities in data)
+                {
+                    List<Contact> cityList = new List<Contact>();
+                    foreach (var city in cities)
+                    {
+                        cityList.Add(city);
+                    }
+                    DictionaryCity.Add(cities.Key, cityList);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        //Display of city dictionary      
+        public void DictionayCity_Display()
+        {
+            if (DictionaryCity.Count == 0)
+                Console.WriteLine("No AddressBook(s) to Show.");
+            if (DictionaryCity.Count >= 1)
+            {
+                foreach (KeyValuePair<string, List<Contact>> addressBooks in DictionaryCity)
+                {
+                    Console.WriteLine("Contacts From City: " + addressBooks.Key);
+                    foreach (Contact items in addressBooks.Value)
+                    {
+                        Console.WriteLine($"Name: {items.firstName + " " + items.lastName}, Phone Number: {items.phoneNumber}, City: {items.city}, State: {items.state}" +
+                            $"\n Address: {items.address}, Zipcode: {items.zip}, Email: {items.email}");
+                        Console.WriteLine();
+                    }
+                }
+            }
+        }
+        public void ContactByStateInDictionary()
+        {
+            // adding list to states dictionary
+            try
+            {
+                var data = People.GroupBy(x => x.state);
+                foreach (var states in data)
+                {
+                    List<Contact> stateList = new List<Contact>();
+                    foreach (var state in states)
+                    {
+                        stateList.Add(state);
+                    }
+                    DictionaryState.Add(states.Key, stateList);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        //Display of state dictionary      
+        public void DictionayState_Display()
+        {
+            if (DictionaryState.Count == 0)
+                Console.WriteLine("No AddressBook(s) to Show.");
+            if (DictionaryState.Count >= 1)
+            {
+                foreach (KeyValuePair<string, List<Contact>> addressBooks in DictionaryState)
+                {
+                    Console.WriteLine("Contacts From State: " + addressBooks.Key);
+                    foreach (Contact items in addressBooks.Value)
+                    {
+                        Console.WriteLine($"Name: {items.firstName + " " + items.lastName}, Phone Number: {items.phoneNumber}, City: {items.city}, State: {items.state}" +
+                            $"\n Address: {items.address}, Zipcode: {items.zip}, Email: {items.email}");
+                        Console.WriteLine();
+                    }
+                }
+            }
         }
     }
 }
